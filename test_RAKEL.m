@@ -29,13 +29,13 @@ function [result_vector, negloss, svm_scores] = test_RAKEL(H, Y, X, L)
 t = 0.5; % threshold
 
 % each classifier must provide a binary decision for the new pattern
-predLabel = cell(height(X),width(H));
-negloss = cell(1,width(H));
-svm_scores = cell(1,width(H));
-for svm_mdl = 1:width(H)
+predLabel = cell(height(X),size(H,2));
+negloss = cell(1,size(H,2));
+svm_scores = cell(1,size(H,2));
+for svm_mdl = 1:size(H,2)
         [predLabel(:, svm_mdl),negloss{svm_mdl}, svm_scores{svm_mdl}] = predict(H{svm_mdl}, X, 'ObservationsIn', 'rows');
 end
-for row = 1:height(predLabel)
+for row = 1:size(predLabel,1)
     % create a temporary table for each pattern of this fold as follows:
     %   - rows represents the m classifiers
     %   - columns represents the 14 classes of ATC classification
@@ -48,7 +48,7 @@ for row = 1:height(predLabel)
     %     DOESN'T belong to the current labelset). This last one is only a
     %     sentinel value to avoid mistakes in the computation of votes and
     %     final decision of the ensemble of classifiers.
-    for clsf=1:width(predLabel)
+    for clsf=1:size(predLabel,2)
         for atccls = 1:width(L)
             if(any(strcmp("c"+string(atccls),Y(clsf,:))))
                 temp(clsf, atccls) = 0;

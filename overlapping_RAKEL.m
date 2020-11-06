@@ -18,12 +18,12 @@ function [classifiers,k_labelsets] = overlapping_RAKEL(m, Kl, L, D)
 % these are all the possible k-labelsets on L
 subsets = nchoosek(L.Properties.VariableNames, Kl);
 % preallocate output params
-k_labelsets = cell(min([m, height(subsets)]), Kl);
+k_labelsets = cell(min([m, size(subsets,1)]), Kl);
 classifiers = cell(1, m);
-for i=1:height(k_labelsets)
+for i=1:size(k_labelsets, 1)
     % randomly select a k-labelset from all the possibilities, and add it
     % to the enseble containing all the selected k-labelsets
-    rand = randi([1 height(subsets)],1,1);
+    rand = randi([1 size(subsets,1)],1,1);
     currentLabelset = subsets(rand ,:);
     k_labelsets(i,:) = currentLabelset;
     % remove the selected k-labelset from all the possibilities, to avoid
